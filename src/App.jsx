@@ -36,7 +36,7 @@ function App() {
         updateLetter(currentRow, currentBox - 1, "");
         setcurrentBox(currentBox - 1);
       }
-      else if (event.key === "Enter" && currentBox === 5) {
+      else if (event.key === "Enter") {
         handleGuess();
       }
       else if (event.key > "A" && event.key > "Z" && currentBox < 5) {
@@ -56,7 +56,15 @@ function App() {
   };
 
   let handleGuess = () => {
-    let guessedWord = board[currentRow].map(cell => cell.letter.toLowerCase()).join("");
+    
+    let currentLetters = board[currentRow].map(cell => cell.letter);
+
+    if (currentLetters.includes("") || currentLetters.length < 5) {
+      alert("Please enter a 5-letter word before guessing.");
+      return;
+    }
+
+    let guessedWord = currentLetters.map(l => l.toLowerCase()).join("");
     let updatedBoard = [...board];
 
     for (let i = 0; i < 5; i++) {
@@ -65,11 +73,9 @@ function App() {
 
       if (guessedLetter === correctLetter) {
         updatedBoard[currentRow][i].color = "bg-green-500 text-white";
-      }
-      else if (targetWord.includes(guessedLetter)) {
+      } else if (targetWord.includes(guessedLetter)) {
         updatedBoard[currentRow][i].color = "bg-yellow-400 text-black";
-      }
-      else {
+      } else {
         updatedBoard[currentRow][i].color = "bg-gray-500 text-white";
       }
     }
@@ -80,13 +86,13 @@ function App() {
 
     if (guessedWord === targetWord) {
       alert("Congratulations you win!");
-      pageReload()
-    }
-    else if (currentRow === 6) {
+      pageReload();
+    } else if (currentRow === 6) {
       alert(`Game Over! The word was: ${targetWord}`);
-      pageReload()
+      pageReload();
     }
   };
+
 
 
   let pageReload = () => {
@@ -108,7 +114,7 @@ function App() {
               row.map((cell) => (
 
                 <Box letter={cell.letter} color={cell.color} />
-                
+
               ))
             }
           </div>
