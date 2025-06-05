@@ -108,6 +108,7 @@ function App() {
               row.map((cell) => (
 
                 <Box letter={cell.letter} color={cell.color} />
+                
               ))
             }
           </div>
